@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+  <title>Patient Portal — FDMST</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body class="dashboard-body">
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <div class="brand-logo"><i class="fa-solid fa-tooth"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">Flores-Dizon</span>
+          <span class="brand-role">Patient Portal</span>
+        </div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose"><i class="fa-solid fa-xmark"></i></button>
+      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" title="Toggle sidebar">
+        <i class="fa-solid fa-chevron-left" id="collapseIcon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <span class="sidebar-section-label">My Care</span>
+        <a href="#" class="sidebar-item active" data-section="overview">
+          <i class="fa-solid fa-gauge-high"></i><span>Overview</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="book">
+          <i class="fa-solid fa-calendar-plus"></i><span>Book Appointment</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="appointments">
+          <i class="fa-solid fa-calendar-check"></i><span>My Appointments</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="records">
+          <i class="fa-solid fa-tooth"></i><span>My Teeth Record</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <span class="sidebar-section-label">Account</span>
+        <a href="#" class="sidebar-item" data-section="feedback">
+          <i class="fa-solid fa-star"></i><span>Give Feedback</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="profile">
+          <i class="fa-solid fa-circle-user"></i><span>My Profile</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="sidebarUser">
+        <div class="user-avatar" id="userAvatar">PT</div>
+        <div class="user-details">
+          <span class="user-name" id="userName">Patient</span>
+          <span class="user-role">Patient</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="dashboard-main" id="dashboardMain">
+    <header class="topbar">
+      <button class="topbar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title" id="topbarTitle">Patient Portal</div>
+      <div class="topbar-actions">
+        <span class="topbar-date" id="topbarDate"></span>
+
+        <!-- Notification Bell -->
+        <div class="notif-wrapper" id="notifWrapper">
+          <button class="notif-btn" id="notifBtn" onclick="toggleNotifDropdown()">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-badge" id="notifBadge" style="display:none">0</span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">
+              <span>Notifications</span>
+              <button class="notif-mark-read" onclick="markAllNotifsRead()">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notifList">
+              <div class="notif-empty">
+                <i class="fa-solid fa-bell-slash"></i>
+                <p>No notifications</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-wrapper" id="profileWrapper">
+          <button class="profile-btn" id="profileBtn" onclick="toggleProfileDropdown()">
+            <div class="user-avatar sm" id="topbarAvatar">PT</div>
+            <i class="fa-solid fa-chevron-down profile-chevron" id="profileChevron"></i>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-dropdown-header">
+              <div class="user-avatar" id="profileDropAvatar">PT</div>
+              <div>
+                <div class="profile-dropdown-name" id="profileDropName">Patient</div>
+                <div class="profile-dropdown-email" id="profileDropRole">Patient</div>
+              </div>
+            </div>
+            <div class="profile-dropdown-menu">
+              <button class="profile-menu-item" onclick="closeProfileDropdown(); switchSection('profile')">
+                <i class="fa-solid fa-user-pen"></i>
+                <span>My Profile</span>
+              </button>
+              <button class="profile-menu-item" onclick="closeProfileDropdown(); openNotifSettings()">
+                <i class="fa-solid fa-bell"></i>
+                <span>Notifications</span>
+              </button>
+              <div class="profile-menu-divider"></div>
+              <div class="profile-menu-item">
+                <i class="fa-solid fa-moon"></i>
+                <span>Dark Mode</span>
+                <div class="theme-toggle" id="themeToggle" onclick="toggleDarkMode()">
+                  <div class="theme-toggle-thumb"></div>
+                </div>
+              </div>
+              <div class="profile-menu-divider"></div>
+              <button class="profile-menu-item danger" onclick="closeProfileDropdown(); Auth.logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ======================== OVERVIEW ======================== -->
+    <section class="content-section active" id="section-overview">
+      <div class="section-title-bar">
+        <h2 id="welcomeMsg">Welcome!</h2>
+        <span class="section-sub" id="overviewDate"></span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon"><i class="fa-solid fa-calendar-days"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiUpcoming">—</span>
+            <span class="kpi-label">Upcoming Appointments</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiCompleted">—</span>
+            <span class="kpi-label">Completed Visits</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-orange">
+          <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiPending">—</span>
+            <span class="kpi-label">Pending Approval</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEXT APPOINTMENT -->
+      <div class="patient-card" id="nextApptCard" style="display:none">
+        <div class="patient-card-header">
+          <h3><i class="fa-solid fa-calendar-check"></i> Next Appointment</h3>
+        </div>
+        <div class="patient-card-body" id="nextApptBody"></div>
+      </div>
+
+      <!-- QUICK BOOK -->
+      <div class="quick-book-cta">
+        <div class="qb-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+        <div>
+          <h3>Need to book an appointment?</h3>
+          <p>Schedule your next dental visit with just a few clicks.</p>
+        </div>
+        <button class="btn btn-primary" onclick="switchSection('book')">
+          <i class="fa-solid fa-calendar-plus"></i> Book Now
+        </button>
+      </div>
+    </section>
+
+    <!-- ======================== BOOK APPOINTMENT ======================== -->
+    <section class="content-section" id="section-book">
+      <div class="section-title-bar">
+        <h2>Book an Appointment</h2>
+      </div>
+
+      <div class="book-form-card">
+        <!-- Booking Progress -->
+        <div class="book-progress" id="bookProgress">
+          <div class="book-progress-step active" id="bookProg1">
+            <div class="book-progress-num">1</div>
+            <span>Service</span>
+          </div>
+          <div class="book-progress-line" id="bookProgLine1"></div>
+          <div class="book-progress-step" id="bookProg2">
+            <div class="book-progress-num">2</div>
+            <span>Date &amp; Time</span>
+          </div>
+          <div class="book-progress-line" id="bookProgLine2"></div>
+          <div class="book-progress-step" id="bookProg3">
+            <div class="book-progress-num">3</div>
+            <span>Confirm</span>
+          </div>
+        </div>
+
+        <div id="bookAlert" class="alert" style="display:none;margin:1.25rem 1.5rem 0;"></div>
+
+        <form id="bookForm">
+          <!-- Step 1: Choose service -->
+          <div class="book-step active" id="bookStep1">
+            <h3 class="book-step-title"><span class="step-num">1</span> Choose a Service</h3>
+            <div class="service-grid-select" id="serviceGrid">
+              <!-- Rendered by JS -->
+            </div>
+            <input type="hidden" id="selectedService" required />
+            <span class="field-error" id="serviceError"></span>
+            <div class="book-nav">
+              <button type="button" class="btn btn-primary" onclick="bookNext(1)">Continue <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- Step 2: Choose date/time -->
+          <div class="book-step" id="bookStep2">
+            <h3 class="book-step-title"><span class="step-num">2</span> Select Date &amp; Time</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Preferred Date *</label>
+                <input type="date" id="bookDate" class="form-control" onchange="loadSlots()" required />
+                <span class="field-error" id="dateError"></span>
+              </div>
+            </div>
+            <div class="time-slots-wrapper">
+              <label class="form-label">Available Time Slots</label>
+              <div id="timeSlots" class="time-slots-grid">
+                <p class="hint-text">Select a date to see available slots.</p>
+              </div>
+              <input type="hidden" id="selectedSlot" required />
+              <span class="field-error" id="slotError"></span>
+            </div>
+            <div class="book-nav">
+              <button type="button" class="btn btn-outline" onclick="bookPrev(2)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <button type="button" class="btn btn-primary" onclick="bookNext(2)">Continue <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- Step 3: Notes & confirm -->
+          <div class="book-step" id="bookStep3">
+            <h3 class="book-step-title"><span class="step-num">3</span> Additional Information</h3>
+
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select id="bookPriority" class="form-control form-select">
+                <option value="routine">Routine</option>
+                <option value="urgent">Urgent</option>
+                <option value="emergency">Emergency</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Describe your symptoms or concerns (optional)</label>
+              <textarea id="bookSymptoms" class="form-control" rows="3" maxlength="500" placeholder="e.g. Toothache on upper right, sensitive to cold..."></textarea>
+            </div>
+
+            <!-- Summary -->
+            <div class="booking-summary" id="bookingSummary"></div>
+
+            <div class="book-nav">
+              <button type="button" class="btn btn-outline" onclick="bookPrev(3)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <button type="submit" class="btn btn-primary" id="submitBookBtn">
+                <span class="btn-text"><i class="fa-solid fa-calendar-plus"></i> Confirm Booking</span>
+                <span class="btn-spinner" style="display:none;"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Success state -->
+          <div class="book-step" id="bookStepDone">
+            <div class="booking-done">
+              <div class="done-icon"><i class="fa-solid fa-circle-check"></i></div>
+              <h3>Appointment Requested!</h3>
+              <p>Your appointment has been submitted and is pending confirmation by our staff. We'll update you as soon as it's confirmed.</p>
+              <div id="bookingDoneDetails"></div>
+              <button type="button" class="btn btn-primary" onclick="switchSection('appointments')">
+                <i class="fa-solid fa-calendar-check"></i> View My Appointments
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ======================== MY APPOINTMENTS ======================== -->
+    <section class="content-section" id="section-appointments">
+      <div class="section-title-bar">
+        <h2>My Appointments</h2>
+        <div class="section-controls">
+          <select id="myApptFilter" class="form-control form-control-sm" onchange="loadMyAppointments()">
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="myApptList">
+        <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+
+    <!-- ======================== TEETH RECORD ======================== -->
+    <section class="content-section" id="section-records">
+      <div class="section-title-bar">
+        <h2>My Teeth Record</h2>
+      </div>
+      <div id="myTeethRecord">
+        <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+
+    <!-- ======================== FEEDBACK ======================== -->
+    <section class="content-section" id="section-feedback">
+      <div class="section-title-bar">
+        <h2>Give Feedback</h2>
+      </div>
+      <div class="feedback-form-card">
+        <div id="feedbackAlert" class="alert" style="display:none;"></div>
+        <form id="feedbackForm">
+          <div class="form-group">
+            <label class="form-label">Related Appointment (optional)</label>
+            <select id="feedbackAppt" class="form-control form-select">
+              <option value="">-- Select appointment --</option>
+            </select>
+          </div>
+
+          <div class="rating-group">
+            <label class="form-label">Overall Experience *</label>
+            <div class="star-rating" id="overallStars" data-target="overallRating"></div>
+            <input type="hidden" id="overallRating" required />
+          </div>
+
+          <div class="form-row">
+            <div class="rating-group">
+              <label class="form-label">Staff Service</label>
+              <div class="star-rating" id="staffStars" data-target="staffRating"></div>
+              <input type="hidden" id="staffRating" />
+            </div>
+            <div class="rating-group">
+              <label class="form-label">Facilities</label>
+              <div class="star-rating" id="facilityStars" data-target="facilitiesRating"></div>
+              <input type="hidden" id="facilitiesRating" />
+            </div>
+            <div class="rating-group">
+              <label class="form-label">Wait Time</label>
+              <div class="star-rating" id="waitStars" data-target="waitTimeRating"></div>
+              <input type="hidden" id="waitTimeRating" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Would you recommend us?</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn" id="recYes" onclick="setRecommend(true)">
+                <i class="fa-solid fa-thumbs-up"></i> Yes
+              </button>
+              <button type="button" class="toggle-btn" id="recNo" onclick="setRecommend(false)">
+                <i class="fa-solid fa-thumbs-down"></i> No
+              </button>
+            </div>
+            <input type="hidden" id="wouldRecommend" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Your Comments</label>
+            <textarea id="feedbackComment" class="form-control" rows="4" maxlength="1000"
+              placeholder="Tell us about your experience..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-check">
+              <input type="checkbox" id="feedbackAnon" />
+              <span>Submit anonymously</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submitFeedbackBtn">
+            <span class="btn-text"><i class="fa-solid fa-star"></i> Submit Feedback</span>
+            <span class="btn-spinner" style="display:none;"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ======================== PROFILE ======================== -->
+    <section class="content-section" id="section-profile">
+      <div class="section-title-bar">
+        <h2>My Profile</h2>
+      </div>
+      <div class="profile-grid">
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profileAvatar">PT</div>
+          </div>
+          <h3 id="profileName">—</h3>
+          <span class="badge badge-patient">Patient</span>
+          <p id="profileId" class="profile-id"></p>
+        </div>
+
+        <div class="profile-info-card">
+          <div class="profile-section-title">Personal Information</div>
+          <form id="profileForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name *</label>
+                <input type="text" id="profileFirst" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name *</label>
+                <input type="text" id="profileLast" class="form-control" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" id="profilePhone" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Gender</label>
+                <select id="profileGender" class="form-control form-select">
+                  <option value="">-- Select --</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                  <option value="prefer_not_to_say">Prefer not to say</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">City / Municipality</label>
+              <input type="text" id="profileCity" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Save Changes
+            </button>
+          </form>
+        </div>
+
+        <div class="profile-info-card">
+          <div class="profile-section-title">Change Password</div>
+          <form id="changePwdForm">
+            <div class="form-group">
+              <label class="form-label">Current Password</label>
+              <div class="input-group">
+                <input type="password" id="currentPwd" class="form-control" required />
+                <button type="button" class="input-toggle-btn" onclick="togglePwd('currentPwd','currentPwdIcon')">
+                  <i class="fa-solid fa-eye" id="currentPwdIcon"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <div class="input-group">
+                <input type="password" id="newPwd" class="form-control" required />
+                <button type="button" class="input-toggle-btn" onclick="togglePwd('newPwd','newPwdIcon')">
+                  <i class="fa-solid fa-eye" id="newPwdIcon"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <input type="password" id="confirmNewPwd" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-outline">
+              <i class="fa-solid fa-key"></i> Update Password
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cancel Modal -->
+  <div class="modal-overlay" id="cancelModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Cancel Appointment</h3>
+        <button class="modal-close" onclick="closeModal('cancelModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to cancel this appointment?</p>
+        <input type="hidden" id="cancelApptId" />
+        <div class="form-group">
+          <label class="form-label">Reason (optional)</label>
+          <input type="text" id="cancelReason" class="form-control" placeholder="e.g. Schedule conflict" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('cancelModal')">Keep Appointment</button>
+        <button class="btn btn-danger" onclick="confirmCancelAppt()">Yes, Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Settings Modal -->
+  <div class="modal-overlay" id="notifSettingsModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Notification Settings</h3>
+        <button class="modal-close" onclick="closeModal('notifSettingsModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted text-sm" style="margin-bottom:1.25rem;">Manage how you receive notifications from the clinic.</p>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <div class="notif-setting-label">Email Notifications</div>
+              <div class="notif-setting-sub">Appointment confirmations and updates</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifEmailToggle" onclick="toggleNotifPref('email')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-mobile-screen"></i>
+            <div>
+              <div class="notif-setting-label">SMS Notifications</div>
+              <div class="notif-setting-sub">Text reminders to your registered number</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifSmsToggle" onclick="toggleNotifPref('sms')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+              <div class="notif-setting-label">Appointment Reminders</div>
+              <div class="notif-setting-sub">24-hour reminder before your appointment</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifRemindToggle" onclick="toggleNotifPref('reminders')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-bell"></i>
+            <div>
+              <div class="notif-setting-label">Push Notifications</div>
+              <div class="notif-setting-sub">Browser alerts for appointment updates</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifPushToggle" onclick="toggleNotifPref('push')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('notifSettingsModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/dashboard-patient.js"></script>
+</body>
+</html>

@@ -1,0 +1,708 @@
+/* ============================================================
+   FDMST - Auth Pages CSS (Login & Register)
+   Dental Clinic Management System
+   ============================================================ */
+
+/* ============================================================
+   AUTH PAGE LAYOUT
+   ============================================================ */
+
+body.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #eef5fb 0%, #e0edf8 40%, #daeef6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  padding: 1rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.auth-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 920px;
+  width: 100%;
+  max-height: calc(100vh - 2rem);
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(13,31,45,0.13), 0 6px 20px rgba(13,31,45,0.06);
+  align-self: center;
+}
+
+.auth-wrapper--wide {
+  max-width: 1050px;
+  min-height: 650px;
+}
+
+/* ============================================================
+   AUTH PANEL (left side - the form side)
+   ============================================================ */
+
+.auth-panel {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+}
+
+/* Standalone brand definitions (mirrors main.css) */
+.auth-panel .brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0891b2, #0d9488);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 3px 12px rgba(8,145,178,0.35);
+}
+
+.auth-panel .brand-name {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.auth-panel .brand-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.auth-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modifier for taller/wider content (register form) */
+.auth-card--wide {
+  /* allows taller content without extra overrides */
+}
+
+.auth-header {
+  margin-bottom: 1.75rem;
+}
+
+.auth-header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0d1f2d;
+  margin: 0 0 0.35rem;
+  letter-spacing: -.025em;
+  line-height: 1.2;
+}
+
+.auth-header p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+
+.auth-form .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.4rem;
+}
+
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.875rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.6875rem 0.875rem 0.6875rem 2.5rem;
+  border: 1.5px solid #dde3ec;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  color: #0d1f2d;
+  background: #f6f9fc;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #0891b2;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
+}
+
+.form-control.input-error {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+.form-control.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.form-control.input-valid {
+  border-color: #22c55e;
+}
+
+/* Select / dropdown styling */
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  cursor: pointer;
+}
+
+/* Select and date inputs inside input-group retain left padding */
+.input-group .form-control:not([type="text"]):not([type="email"]):not([type="password"]):not([type="tel"]),
+.input-group select.form-control {
+  padding-left: 2.5rem;
+}
+
+/* Validation tick/cross icon positioned before the toggle button */
+.input-validate-icon {
+  position: absolute;
+  right: 3rem;
+  font-size: 0.875rem;
+}
+
+/* Show/hide password toggle */
+.input-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.input-toggle-btn:hover {
+  color: #0891b2;
+}
+
+/* Field-level feedback messages */
+.field-error {
+  display: block;
+  font-size: 0.78rem;
+  color: #ef4444;
+  margin-top: 0.3rem;
+  min-height: 1rem;
+}
+
+.field-hint {
+  display: block;
+  font-size: 0.78rem;
+  color: #f59e0b;
+  margin-top: 0.3rem;
+}
+
+/* Required field asterisk */
+.req {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.2s;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+  color: white;
+  border-color: transparent;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0e7490, #155e75);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #0891b2;
+  border-color: #0891b2;
+}
+
+.btn-outline:hover {
+  background: rgba(8, 145, 178, 0.08);
+}
+
+.btn-full {
+  width: 100%;
+  min-height: 2.75rem;
+  height: auto;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-outline:active {
+  background: rgba(8, 145, 178, 0.15);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ============================================================
+   FORM ROWS & ALERTS
+   ============================================================ */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn-row {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.btn-row .btn {
+  flex: 1;
+}
+
+/* General alert banners */
+.alert {
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid;
+}
+
+.alert-error {
+  background: #fef2f2;
+  border-left-color: #ef4444;
+  color: #dc2626;
+}
+
+.alert-success {
+  background: #f0fdf4;
+  border-left-color: #22c55e;
+  color: #16a34a;
+}
+
+/* ============================================================
+   REGISTRATION STEPS
+   ============================================================ */
+
+.reg-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.75rem;
+}
+
+.reg-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.reg-step.active {
+  color: #0891b2;
+}
+
+.reg-step.done {
+  color: #22c55e;
+}
+
+.step-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.25s;
+  flex-shrink: 0;
+}
+
+.reg-step.active .step-dot {
+  background: #0891b2;
+  color: white;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.4);
+}
+
+.reg-step.done .step-dot {
+  background: #22c55e;
+  color: white;
+}
+
+/* Connector line between steps */
+.reg-step-line {
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  min-width: 20px;
+}
+
+/* Multi-step form panels */
+.form-step {
+  display: none;
+}
+
+.form-step.active {
+  display: block;
+}
+
+/* ============================================================
+   PASSWORD STRENGTH
+   ============================================================ */
+
+.password-strength {
+  margin-top: 0.5rem;
+}
+
+.strength-bar {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.strength-weak  { background: #ef4444; }
+.strength-fair  { background: #f59e0b; }
+.strength-good  { background: #3b82f6; }
+.strength-strong { background: #22c55e; }
+
+.strength-label {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Password rule checklist */
+.password-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+}
+
+.password-rules li {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.password-rules li.rule-pass {
+  color: #22c55e;
+}
+
+.password-rules li i {
+  font-size: 0.7rem;
+}
+
+/* ============================================================
+   FORM CHECKBOX
+   ============================================================ */
+
+.form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: 0.83rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.form-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: #0891b2;
+  cursor: pointer;
+}
+
+/* ============================================================
+   DIVIDER & SWITCH LINKS
+   ============================================================ */
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+.auth-link {
+  color: #0891b2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-back {
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.auth-link-muted {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.auth-link-muted:hover {
+  color: #0891b2;
+}
+
+/* ============================================================
+   RIGHT VISUAL PANEL
+   ============================================================ */
+
+.auth-visual {
+  background: linear-gradient(155deg, #0972a5 0%, #0e7490 45%, #0d665c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative circles */
+.auth-visual::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.auth-visual::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -40px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.visual-content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-align: center;
+}
+
+.visual-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.visual-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  opacity: 0.95;
+}
+
+.visual-content p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 0 0 1.75rem;
+  line-height: 1.6;
+}
+
+.visual-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.visual-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.visual-feature i {
+  color: #a7f3d0;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Tablet / mobile: collapse to single column, hide visual panel */
+@media (max-width: 768px) {
+  body.auth-page {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .auth-wrapper,
+  .auth-wrapper--wide {
+    grid-template-columns: 1fr;
+    border-radius: 0;
+    min-height: 100vh;
+    max-width: 100%;
+    box-shadow: none;
+  }
+
+  .auth-visual {
+    display: none;
+  }
+
+  .auth-panel {
+    padding: 1.75rem 1.25rem 2.5rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 420px) {
+  .auth-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .password-rules {
+    grid-template-columns: 1fr;
+  }
+}

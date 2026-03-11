@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+  <title>Sign In — Flores-Dizon Dental Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-wrapper">
+    <!-- LEFT PANEL -->
+    <div class="auth-panel">
+      <a href="/" class="auth-brand">
+        <div class="brand-logo"><i class="fa-solid fa-tooth"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">Flores-Dizon</span>
+          <span class="brand-sub">Dental Clinic</span>
+        </div>
+      </a>
+
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Welcome back</h1>
+          <p>Sign in to access your account</p>
+        </div>
+
+        <div id="alertBox" class="alert" style="display:none;"></div>
+
+        <form id="loginForm" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <div class="input-group">
+              <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <span class="field-error" id="emailError"></span>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="password" class="form-label">Password</label>
+            </div>
+            <div class="input-group">
+              <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+              <button type="button" class="input-toggle-btn" id="togglePassword" aria-label="Show/hide password" tabindex="-1">
+                <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+              </button>
+            </div>
+            <span class="field-error" id="passwordError"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+            <span class="btn-text">Sign In</span>
+            <span class="btn-spinner" style="display:none;"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+          </button>
+        </form>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <p class="auth-switch">
+          Don't have an account?
+          <a href="/register.html" class="auth-link">Register as a patient</a>
+        </p>
+
+        <p class="auth-back">
+          <a href="/" class="auth-link-muted"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL (decorative) -->
+    <div class="auth-visual">
+      <div class="visual-content">
+        <div class="visual-icon"><i class="fa-solid fa-tooth"></i></div>
+        <h2>Manage Your Dental Health</h2>
+        <p>Access your appointments, dental records, and clinic updates all in one place.</p>
+        <div class="visual-features">
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>View upcoming appointments</span>
+          </div>
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Access your dental records</span>
+          </div>
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Book new appointments online</span>
+          </div>
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Receive appointment updates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth-guard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('loginForm');
+      const toggleBtn = document.getElementById('togglePassword');
+      const toggleIcon = document.getElementById('togglePasswordIcon');
+      const pwdInput = document.getElementById('password');
+      const alertBox = document.getElementById('alertBox');
+
+      // Show/hide password toggle
+      toggleBtn.addEventListener('click', () => {
+        const isPassword = pwdInput.type === 'password';
+        pwdInput.type = isPassword ? 'text' : 'password';
+        toggleIcon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        alertBox.style.display = 'none';
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        // Client-side validation
+        let isValid = true;
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+          isValid = false;
+        }
+        if (!password) {
+          document.getElementById('passwordError').textContent = 'Password is required.';
+          isValid = false;
+        }
+        if (!isValid) return;
+
+        const btn = document.getElementById('loginBtn');
+        btn.querySelector('.btn-text').style.display = 'none';
+        btn.querySelector('.btn-spinner').style.display = 'inline';
+        btn.disabled = true;
+
+        try {
+          const data = await API.post('/auth/login', { email, password });
+
+          if (data.success) {
+            Auth.setToken(data.token);
+            Auth.setUser(data.user);
+
+            UI.showToast('Welcome back, ' + data.user.firstName + '!', 'success');
+
+            setTimeout(() => {
+              const role = data.user.role;
+              if (role === 'admin') window.location.href = '/dashboard/admin.html';
+              else if (role === 'staff') window.location.href = '/dashboard/staff.html';
+              else window.location.href = '/dashboard/patient.html';
+            }, 500);
+          } else {
+            alertBox.className = 'alert alert-error';
+            alertBox.textContent = data.message || 'Login failed. Please try again.';
+            alertBox.style.display = 'block';
+          }
+        } catch (err) {
+          alertBox.className = 'alert alert-error';
+          alertBox.textContent = err.message || 'Unable to connect. Please check your connection.';
+          alertBox.style.display = 'block';
+        } finally {
+          btn.querySelector('.btn-text').style.display = 'inline';
+          btn.querySelector('.btn-spinner').style.display = 'none';
+          btn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

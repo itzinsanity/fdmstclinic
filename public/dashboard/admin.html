@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+  <title>Admin Dashboard — FDMST</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-body">
+
+  <!-- MOBILE OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <div class="brand-logo"><i class="fa-solid fa-tooth"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">Flores-Dizon</span>
+          <span class="brand-role">Admin Panel</span>
+        </div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose"><i class="fa-solid fa-xmark"></i></button>
+      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" title="Toggle sidebar">
+        <i class="fa-solid fa-chevron-left" id="collapseIcon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <span class="sidebar-section-label">Overview</span>
+        <a href="#" class="sidebar-item active" data-section="analytics">
+          <i class="fa-solid fa-chart-line"></i><span>Analytics</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="calendar">
+          <i class="fa-solid fa-calendar-days"></i><span>Today's Schedule</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <span class="sidebar-section-label">Management</span>
+        <a href="#" class="sidebar-item" data-section="appointments">
+          <i class="fa-solid fa-calendar-check"></i><span>Appointments</span>
+          <span class="sidebar-badge" id="pendingBadge" style="display:none">0</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="patients">
+          <i class="fa-solid fa-users"></i><span>Patients</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="records">
+          <i class="fa-solid fa-tooth"></i><span>Teeth Records</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="inventory">
+          <i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span>
+          <span class="sidebar-badge" id="lowStockBadge" style="display:none"></span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="feedback">
+          <i class="fa-solid fa-star-half-stroke"></i><span>Feedback</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <span class="sidebar-section-label">System</span>
+        <a href="#" class="sidebar-item" data-section="users">
+          <i class="fa-solid fa-user-gear"></i><span>User Management</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="trash">
+          <i class="fa-solid fa-trash-can"></i><span>Recently Deleted</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="promotions">
+          <i class="fa-solid fa-tag"></i><span>Promotions</span>
+          <span class="sidebar-badge" id="subscribersBadge" style="display:none">0</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="sidebarUser">
+        <div class="user-avatar" id="userAvatar">AD</div>
+        <div class="user-details">
+          <span class="user-name" id="userName">Admin</span>
+          <span class="user-role">Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main" id="dashboardMain">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="topbar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title" id="topbarTitle">Analytics Overview</div>
+      <div class="topbar-actions">
+        <span class="topbar-date" id="topbarDate"></span>
+
+        <!-- Notification Bell -->
+        <div class="notif-wrapper" id="notifWrapper">
+          <button class="notif-btn" id="notifBtn" onclick="toggleNotifDropdown()">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-badge" id="notifBadge" style="display:none">0</span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">
+              <span>Notifications</span>
+              <button class="notif-mark-read" onclick="markAllNotifsRead()">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notifList">
+              <div class="notif-empty">
+                <i class="fa-solid fa-bell-slash"></i>
+                <p>No notifications</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-wrapper" id="profileWrapper">
+          <button class="profile-btn" id="profileBtn" onclick="toggleProfileDropdown()">
+            <div class="user-avatar sm" id="topbarAvatar">AD</div>
+            <i class="fa-solid fa-chevron-down profile-chevron" id="profileChevron"></i>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-dropdown-header">
+              <div class="user-avatar" id="profileDropAvatar">AD</div>
+              <div>
+                <div class="profile-dropdown-name" id="profileDropName">Admin</div>
+                <div class="profile-dropdown-email" id="profileDropRole">Administrator</div>
+              </div>
+            </div>
+            <div class="profile-dropdown-menu">
+              <div class="profile-menu-item">
+                <i class="fa-solid fa-moon"></i>
+                <span>Dark Mode</span>
+                <div class="theme-toggle" id="themeToggle" onclick="toggleDarkMode()">
+                  <div class="theme-toggle-thumb"></div>
+                </div>
+              </div>
+              <button class="profile-menu-item" onclick="closeProfileDropdown(); openNotifSettings()">
+                <i class="fa-solid fa-bell"></i>
+                <span>Notifications</span>
+              </button>
+              <div class="profile-menu-divider"></div>
+              <button class="profile-menu-item danger" onclick="closeProfileDropdown(); Auth.logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ======================== SECTION: ANALYTICS ======================== -->
+    <section class="content-section active" id="section-analytics">
+      <div class="section-title-bar">
+        <h2>Analytics</h2>
+        <div class="section-controls">
+          <select id="analyticsYear" class="form-control form-control-sm">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+          <select id="analyticsPeriod" class="form-control form-control-sm">
+            <option value="yearly">Yearly</option>
+            <option value="monthly">Monthly</option>
+            <option value="weekly">Weekly</option>
+            <option value="daily">Daily</option>
+          </select>
+          <button class="btn btn-sm btn-primary" onclick="loadAnalytics()">
+            <i class="fa-solid fa-rotate"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Inner Analytics Tabs -->
+      <div class="analytics-tabs">
+        <button class="analytics-tab active" data-tab="overview" onclick="switchAnalyticsTab('overview')">
+          <i class="fa-solid fa-chart-line"></i> Overview
+        </button>
+        <button class="analytics-tab" data-tab="revenue" onclick="switchAnalyticsTab('revenue')">
+          <i class="fa-solid fa-chart-column"></i> Revenue &amp; Business
+        </button>
+      </div>
+
+      <!-- ── Overview Pane ── -->
+      <div class="analytics-tab-pane active" data-pane="overview">
+
+        <!-- KPI CARDS -->
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="kpi-card kpi-blue">
+            <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpiPatients">—</span>
+              <span class="kpi-label">Total Patients</span>
+            </div>
+          </div>
+          <div class="kpi-card kpi-teal">
+            <div class="kpi-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpiAppts">—</span>
+              <span class="kpi-label">Total Appointments</span>
+              <span class="kpi-label" id="kpiApptToday" style="font-size:.7rem;"></span>
+            </div>
+          </div>
+          <div class="kpi-card kpi-green">
+            <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpiCompleted">—</span>
+              <span class="kpi-label">Completed</span>
+            </div>
+          </div>
+          <div class="kpi-card kpi-orange">
+            <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpiPending">—</span>
+              <span class="kpi-label">Pending</span>
+            </div>
+          </div>
+          <div class="kpi-card kpi-red">
+            <div class="kpi-icon"><i class="fa-solid fa-circle-xmark"></i></div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpiCancelled">—</span>
+              <span class="kpi-label">Cancelled</span>
+            </div>
+          </div>
+          <div class="kpi-card kpi-purple">
+            <div class="kpi-icon"><i class="fa-solid fa-star"></i></div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpiRating">—</span>
+              <span class="kpi-label">Avg. Rating</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHARTS ROW 1 -->
+        <div class="charts-grid">
+          <div class="chart-card" style="grid-column: span 2;">
+            <div class="chart-header">
+              <span class="chart-title">Appointment Trends</span>
+              <span class="text-muted text-sm">Appointments over time by status</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartTrend"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Appointment Status</span>
+              <span class="text-muted text-sm">Current distribution</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartStatus"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHARTS ROW 2 -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Services Breakdown</span>
+              <span class="text-muted text-sm">Most requested services</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartServices"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Patient Demographics</span>
+              <span class="text-muted text-sm">Age group distribution</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartAge"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Gender Distribution</span>
+              <span class="text-muted text-sm">Patient gender breakdown</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartGender"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHARTS ROW 3 -->
+        <div class="charts-grid">
+          <div class="chart-card" style="grid-column: span 2;">
+            <div class="chart-header">
+              <span class="chart-title">New Patient Registrations</span>
+              <span class="text-muted text-sm">Monthly registrations this year</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartRegistrations"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Monthly Avg. Rating</span>
+              <span class="text-muted text-sm">Satisfaction score over time</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartRating"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- INVENTORY SUMMARY -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Inventory by Category</span>
+              <span class="text-muted text-sm">Total value per category</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartInventory"></canvas>
+            </div>
+          </div>
+          <div class="chart-card" style="grid-column: span 2;">
+            <div class="chart-header">
+              <span class="chart-title">Low Stock Alerts</span>
+              <span class="text-muted text-sm">Items at or below reorder point</span>
+            </div>
+            <div class="chart-body" id="lowStockTable">
+              <div class="loading-placeholder">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.analytics-tab-pane overview -->
+
+      <!-- ── Revenue & Business Pane ── -->
+      <div class="analytics-tab-pane" data-pane="revenue">
+
+        <!-- Revenue KPI Cards -->
+        <div class="revenue-kpi-grid" id="bamKpiGrid">
+          <div class="revenue-kpi-card">
+            <div class="revenue-label">Total Revenue</div>
+            <div class="revenue-value" id="bamTotalRev">—</div>
+            <div class="revenue-sub">All completed appointments</div>
+          </div>
+          <div class="revenue-kpi-card">
+            <div class="revenue-label">Monthly Revenue</div>
+            <div class="revenue-value" id="bamMonthRev">—</div>
+            <div class="revenue-sub" id="bamMonthRevSub"></div>
+          </div>
+          <div class="revenue-kpi-card">
+            <div class="revenue-label">Revenue Growth</div>
+            <div class="revenue-value" id="bamRevGrowth">—</div>
+            <div class="revenue-sub">vs. last month</div>
+          </div>
+          <div class="revenue-kpi-card">
+            <div class="revenue-label">Avg. Per Visit</div>
+            <div class="revenue-value" id="bamAvgRev">—</div>
+            <div class="revenue-sub">Average appointment fee</div>
+          </div>
+          <div class="revenue-kpi-card" style="border-left-color:#8b5cf6;">
+            <div class="revenue-label">Top Service</div>
+            <div class="revenue-value" id="bamTopService" style="font-size:1rem;">—</div>
+            <div class="revenue-sub" id="bamTopServiceSub"></div>
+          </div>
+          <div class="revenue-kpi-card" style="border-left-color:#0891b2;">
+            <div class="revenue-label">Retention Rate</div>
+            <div class="revenue-value" id="bamRetention">—</div>
+            <div class="revenue-sub">Returning patients</div>
+          </div>
+          <div class="revenue-kpi-card" style="border-left-color:#f59e0b;">
+            <div class="revenue-label">Completion Rate</div>
+            <div class="revenue-value" id="bamCompleted">—</div>
+            <div class="revenue-sub">Booked → Completed</div>
+          </div>
+          <div class="revenue-kpi-card" style="border-left-color:#64748b;">
+            <div class="revenue-label">Cancellation Rate</div>
+            <div class="revenue-value" id="bamCancelRate">—</div>
+            <div class="revenue-sub">Of all appointments</div>
+          </div>
+          <div class="revenue-kpi-card" style="border-left-color:#22c55e;">
+            <div class="revenue-label">New Patients</div>
+            <div class="revenue-value" id="bamNewPatients">—</div>
+            <div class="revenue-sub">First-time patients</div>
+          </div>
+        </div>
+
+        <!-- Revenue Charts -->
+        <div class="charts-grid">
+          <div class="chart-card" style="grid-column: span 3;">
+            <div class="chart-header">
+              <div>
+                <span class="chart-title">Revenue Trend</span>
+                <span class="text-muted text-sm" style="display:block;">Revenue over time by period</span>
+              </div>
+              <div style="display:flex;gap:.375rem;">
+                <button class="btn btn-sm btn-primary" id="bamPeriodMonthly" onclick="switchBamPeriod('monthly')">Monthly</button>
+                <button class="btn btn-sm btn-outline" id="bamPeriodWeekly" onclick="switchBamPeriod('weekly')">Weekly</button>
+              </div>
+            </div>
+            <div class="chart-body">
+              <canvas id="bamChartRevTrend"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Revenue by Service</span>
+              <span class="text-muted text-sm">Top revenue-generating services</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="bamChartRevService"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">New vs. Returning Patients</span>
+              <span class="text-muted text-sm">Monthly new vs. returning appointments</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="bamChartNewReturn"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scheduling Charts -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Peak Appointment Hours</span>
+              <span class="text-muted text-sm">Busiest hours of the day</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="bamChartPeakHours"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Peak Days of the Week</span>
+              <span class="text-muted text-sm">Appointments by day</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="bamChartPeakDays"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Funnel + Behavior -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Appointment Completion Funnel</span>
+              <span class="text-muted text-sm">From booking to feedback</span>
+            </div>
+            <div class="chart-body" id="bamFunnelContainer" style="height:auto;padding:1rem 0;">
+              <canvas id="bamChartFunnel"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Patient Behavior</span>
+              <span class="text-muted text-sm">Engagement and retention stats</span>
+            </div>
+            <div class="chart-body" id="bamBehaviorContainer" style="height:auto;padding:.5rem 0;">
+              <div class="empty-state" style="padding:2rem 1rem">
+                <i class="fa-solid fa-chart-pie"></i>
+                <p>Behavior analytics coming soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.analytics-tab-pane revenue -->
+    </section>
+
+    <!-- ======================== SECTION: TODAY'S SCHEDULE ======================== -->
+    <section class="content-section" id="section-calendar">
+      <div class="section-title-bar">
+        <h2>Today's Schedule</h2>
+        <span class="section-sub" id="todayDateLabel"></span>
+      </div>
+      <div id="todayAppointments">
+        <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: APPOINTMENTS ======================== -->
+    <section class="content-section" id="section-appointments">
+      <div class="section-title-bar">
+        <h2>Appointments</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="apptSearch" placeholder="Search patient or service..." class="form-control" oninput="debounceApptSearch()" />
+          </div>
+          <select id="apptStatusFilter" class="form-control form-control-sm" onchange="loadAppointments()">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <input type="date" id="apptDateFilter" class="form-control form-control-sm" />
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table" id="apptTable">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="apptTableBody">
+              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="apptPagination"></div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: PATIENTS ======================== -->
+    <section class="content-section" id="section-patients">
+      <div class="section-title-bar">
+        <h2>Patients</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="patientSearch" placeholder="Search name or email..." class="form-control" oninput="debouncePatientSearch()" />
+          </div>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Registered</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientTableBody">
+              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="patientPagination"></div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: TEETH RECORDS ======================== -->
+    <section class="content-section" id="section-records">
+      <div class="section-title-bar">
+        <h2>Teeth Records</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="recordSearch" placeholder="Search patient..." class="form-control" oninput="debounceRecordSearch()" />
+          </div>
+        </div>
+      </div>
+      <div id="recordsContent">
+        <div class="empty-state">
+          <i class="fa-solid fa-tooth"></i>
+          <p>Search for a patient to view their teeth record.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: INVENTORY ======================== -->
+    <section class="content-section" id="section-inventory">
+      <div class="section-title-bar">
+        <h2>Inventory Management</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="invSearch" placeholder="Search item name..." class="form-control" oninput="debounceInvSearch()" />
+          </div>
+          <select id="invCategoryFilter" class="form-control form-control-sm" onchange="loadInventory()">
+            <option value="">All Categories</option>
+            <option>Anesthetics</option><option>Restorative Materials</option>
+            <option>Diagnostic Tools</option><option>Surgical Instruments</option>
+            <option>Sterilization Supplies</option><option>PPE</option>
+            <option>Impression Materials</option><option>Orthodontic Supplies</option>
+            <option>Radiography Supplies</option><option>Infection Control</option>
+            <option>Office Supplies</option><option>Other</option>
+          </select>
+          <label class="form-check">
+            <input type="checkbox" id="lowStockFilter" onchange="loadInventory()" />
+            <span>Low stock only</span>
+          </label>
+          <button class="btn btn-primary btn-sm" onclick="openAddInventoryModal()">
+            <i class="fa-solid fa-plus"></i> Add Item
+          </button>
+        </div>
+      </div>
+      <div class="kpi-grid" id="invSummary" style="margin-bottom:1rem;"></div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Unit</th>
+                <th>Reorder Point</th>
+                <th>Unit Cost</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invTableBody">
+              <tr><td colspan="8" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="invPagination"></div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: FEEDBACK ======================== -->
+    <section class="content-section" id="section-feedback">
+      <div class="section-title-bar">
+        <h2>Patient Feedback</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="feedbackSearch" placeholder="Search patient name..." class="form-control" oninput="debounceLoadFeedback()" />
+          </div>
+          <select id="feedbackRatingSort" class="form-control form-control-sm" onchange="loadFeedback()">
+            <option value="">All Ratings</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+          <select id="feedbackSortBy" class="form-control form-control-sm" onchange="loadFeedback()">
+            <option value="recent">Most Recent</option>
+            <option value="rating-highest">Highest Rating</option>
+            <option value="rating-lowest">Lowest Rating</option>
+          </select>
+        </div>
+      </div>
+      <div id="feedbackStats" class="kpi-grid" style="margin-bottom:1rem;"></div>
+      <div class="feedback-grid" id="feedbackGrid">
+        <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: USER MANAGEMENT ======================== -->
+    <section class="content-section" id="section-users">
+      <div class="section-title-bar">
+        <h2>User Management</h2>
+        <button class="btn btn-primary btn-sm" onclick="openAddUserModal()">
+          <i class="fa-solid fa-user-plus"></i> Add Staff/Admin
+        </button>
+      </div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="usersPagination"></div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: RECENTLY DELETED (TRASH) ======================== -->
+    <section class="content-section" id="section-trash">
+      <div class="section-title-bar">
+        <h2>Recently Deleted</h2>
+        <button class="btn btn-sm btn-danger" onclick="confirmPurgeAll()">
+          <i class="fa-solid fa-trash"></i> Purge All in Tab
+        </button>
+      </div>
+      <p class="text-muted text-sm" style="margin-bottom:1.25rem;">
+        Deleted items are kept here until permanently removed. You can restore them or delete them forever.
+      </p>
+
+      <div class="trash-tabs" id="trashTabs">
+        <button class="trash-tab active" data-trash-type="feedback" onclick="switchTrashTab('feedback', this)">
+          <i class="fa-solid fa-star-half-stroke"></i> Feedback
+          <span class="trash-tab-count" id="trashCount-feedback">0</span>
+        </button>
+        <button class="trash-tab" data-trash-type="appointments" onclick="switchTrashTab('appointments', this)">
+          <i class="fa-solid fa-calendar-xmark"></i> Appointments
+          <span class="trash-tab-count" id="trashCount-appointments">0</span>
+        </button>
+        <button class="trash-tab" data-trash-type="inventory" onclick="switchTrashTab('inventory', this)">
+          <i class="fa-solid fa-boxes-stacked"></i> Inventory
+          <span class="trash-tab-count" id="trashCount-inventory">0</span>
+        </button>
+        <button class="trash-tab" data-trash-type="patients" onclick="switchTrashTab('patients', this)">
+          <i class="fa-solid fa-user-minus"></i> Patients
+          <span class="trash-tab-count" id="trashCount-patients">0</span>
+        </button>
+      </div>
+
+      <div class="section-controls" style="margin-bottom:1rem;">
+        <span class="section-sub" id="trashListLabel">Loading...</span>
+        <div id="trashPagination" style="margin-left:auto;"></div>
+      </div>
+
+      <div class="trash-list" id="trashList">
+        <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: PROMOTIONS ======================== -->
+    <section class="content-section" id="section-promotions">
+      <div class="section-title-bar">
+        <h2>Promotions &amp; Subscribers</h2>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="kpi-grid" id="promoKpiGrid" style="margin-bottom:1.5rem;">
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(8,145,178,0.12);color:#0891b2;"><i class="fa-solid fa-users"></i></div>
+          <div class="kpi-body"><div class="kpi-value" id="promoTotalSubs">—</div><div class="kpi-label">Total Subscribers</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(34,197,94,0.12);color:#22c55e;"><i class="fa-solid fa-user-check"></i></div>
+          <div class="kpi-body"><div class="kpi-value" id="promoActiveSubs">—</div><div class="kpi-label">Active Subscribers</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b;"><i class="fa-solid fa-bullhorn"></i></div>
+          <div class="kpi-body"><div class="kpi-value" id="promoActivePromos">—</div><div class="kpi-label">Active Promotions</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6;"><i class="fa-solid fa-fire"></i></div>
+          <div class="kpi-body"><div class="kpi-value kpi-value-sm" id="promoTopService">—</div><div class="kpi-label">Top Interest</div></div>
+        </div>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="analytics-tabs" style="margin-bottom:1.25rem;">
+        <button class="analytics-tab active" data-promo-tab="subscribers" onclick="switchPromoTab('subscribers')">
+          <i class="fa-solid fa-users"></i> Subscribers
+        </button>
+        <button class="analytics-tab" data-promo-tab="promotions" onclick="switchPromoTab('promotions')">
+          <i class="fa-solid fa-bullhorn"></i> Promotions
+        </button>
+        <button class="analytics-tab" data-promo-tab="insights" onclick="switchPromoTab('insights')">
+          <i class="fa-solid fa-chart-bar"></i> Insights
+        </button>
+      </div>
+
+      <!-- Subscribers Pane -->
+      <div class="promo-tab-pane active" id="promoPane-subscribers">
+        <div class="section-controls" style="margin-bottom:1rem;">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="subSearch" placeholder="Search name or email…" class="form-control" oninput="debounceSubSearch()" />
+          </div>
+          <select id="subStatusFilter" class="form-control form-control-sm" onchange="loadSubscribers()">
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Interested In</th>
+                  <th>Status</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subsTableBody">
+                <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination-bar" id="subsPagination"></div>
+        </div>
+      </div>
+
+      <!-- Promotions Pane -->
+      <div class="promo-tab-pane" id="promoPane-promotions">
+        <div class="section-controls" style="margin-bottom:1rem;">
+          <button class="btn btn-primary btn-sm" onclick="openCreatePromoModal()">
+            <i class="fa-solid fa-plus"></i> Create Promotion
+          </button>
+        </div>
+        <div class="promo-cards-grid" id="promoCardsGrid">
+          <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</div>
+        </div>
+      </div>
+
+      <!-- Insights Pane -->
+      <div class="promo-tab-pane" id="promoPane-insights">
+        <div class="charts-grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));">
+          <div class="chart-card">
+            <div class="chart-header"><span class="chart-title">Service Interest Breakdown</span></div>
+            <canvas id="serviceInterestChart" style="min-height:240px;"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><span class="chart-title">Monthly Subscriber Growth</span></div>
+            <canvas id="subscriberGrowthChart" style="min-height:240px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================== MODALS ======================== -->
+
+  <!-- Appointment Detail Modal -->
+  <div class="modal-overlay" id="apptModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Appointment Details</h3>
+        <button class="modal-close" onclick="closeModal('apptModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="apptModalBody"></div>
+      <div class="modal-footer" id="apptModalFooter"></div>
+    </div>
+  </div>
+
+  <!-- Patient Detail Modal -->
+  <div class="modal-overlay" id="patientModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3>Patient Profile</h3>
+        <button class="modal-close" onclick="closeModal('patientModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="patientModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Inventory Modal -->
+  <div class="modal-overlay" id="invModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="invModalTitle">Add Inventory Item</h3>
+        <button class="modal-close" onclick="closeModal('invModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="invForm">
+          <input type="hidden" id="invItemId" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Item Name *</label>
+              <input type="text" id="invName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="invCategory" class="form-control form-select" required>
+                <option value="">-- Select --</option>
+                <option>Anesthetics</option><option>Restorative Materials</option>
+                <option>Diagnostic Tools</option><option>Surgical Instruments</option>
+                <option>Sterilization Supplies</option><option>PPE</option>
+                <option>Impression Materials</option><option>Orthodontic Supplies</option>
+                <option>Radiography Supplies</option><option>Infection Control</option>
+                <option>Office Supplies</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Quantity *</label>
+              <input type="number" id="invQuantity" class="form-control" min="0" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit</label>
+              <input type="text" id="invUnit" class="form-control" placeholder="piece, box, ml..." />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Reorder Point</label>
+              <input type="number" id="invReorderPoint" class="form-control" min="0" value="10" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit Cost (₱)</label>
+              <input type="number" id="invUnitCost" class="form-control" min="0" step="0.01" value="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Supplier</label>
+              <input type="text" id="invSupplier" class="form-control" placeholder="Supplier name..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea id="invNotes" class="form-control" rows="2" maxlength="500"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('invModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitInventoryForm()">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adjust Stock Modal -->
+  <div class="modal-overlay" id="adjustStockModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Adjust Stock</h3>
+        <button class="modal-close" onclick="closeModal('adjustStockModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="adjustItemId" />
+        <div class="form-group">
+          <label class="form-label">Item: <strong id="adjustItemName"></strong></label>
+          <p class="hint-text">Current stock: <strong id="adjustCurrentQty"></strong></p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Action *</label>
+          <select id="adjustAction" class="form-control form-select">
+            <option value="restock">Restock (add)</option>
+            <option value="use">Use (deduct)</option>
+            <option value="disposal">Disposal (deduct)</option>
+            <option value="adjustment">Manual Adjustment (set)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quantity *</label>
+          <input type="number" id="adjustQty" class="form-control" min="1" value="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <input type="text" id="adjustNotes" class="form-control" placeholder="Optional reason..." />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('adjustStockModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitStockAdjust()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal-overlay" id="addUserModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Add Staff / Admin User</h3>
+        <button class="modal-close" onclick="closeModal('addUserModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="addUserForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name *</label>
+              <input type="text" id="newUserFirstName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label>
+              <input type="text" id="newUserLastName" class="form-control" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="newUserEmail" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" id="newUserPhone" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role *</label>
+            <select id="newUserRole" class="form-control form-select" required>
+              <option value="staff">Staff</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password *</label>
+            <div class="input-group">
+              <input type="password" id="newUserPassword" class="form-control" required />
+              <button type="button" class="input-toggle-btn" onclick="togglePwd('newUserPassword', 'newUserPwdIcon')">
+                <i class="fa-solid fa-eye" id="newUserPwdIcon"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAddUser()">Create User</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div class="modal-overlay" id="editUserModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Edit User Information</h3>
+        <button class="modal-close" onclick="closeModal('editUserModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="editUserForm">
+          <input type="hidden" id="editUserId" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name *</label>
+              <input type="text" id="editUserFirst" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label>
+              <input type="text" id="editUserLast" class="form-control" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="editUserEmail" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" id="editUserPhone" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role *</label>
+            <select id="editUserRole" class="form-control form-select" required>
+              <option value="staff">Staff</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password <span class="text-muted">(leave blank to keep current)</span></label>
+            <div class="input-group">
+              <input type="password" id="editUserPwd" class="form-control" placeholder="Leave blank if not changing..." />
+              <button type="button" class="input-toggle-btn" onclick="togglePwd('editUserPwd', 'editUserPwdIcon')">
+                <i class="fa-solid fa-eye" id="editUserPwdIcon"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('editUserModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitEditUser()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooth Condition Edit Modal -->
+  <div class="modal-overlay" id="toothModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Edit Tooth Condition</h3>
+        <button class="modal-close" onclick="closeModal('toothModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p id="toothModalLabel" style="font-size:.875rem;font-weight:600;color:var(--text-secondary);margin-bottom:.75rem;">Tooth #—</p>
+        <input type="hidden" id="toothModalNum" />
+        <select id="toothCondition" class="form-control form-select" style="margin-bottom:1rem;">
+          <option value="healthy">Healthy</option>
+          <option value="decayed">Decayed</option>
+          <option value="filled">Filled</option>
+          <option value="missing">Missing</option>
+          <option value="crowned">Crowned</option>
+          <option value="implant">Implant</option>
+          <option value="bridge">Bridge</option>
+          <option value="veneer">Veneer</option>
+          <option value="needs_treatment">Needs Treatment</option>
+        </select>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea id="toothNotes" class="form-control" rows="2" placeholder="Clinical notes..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('toothModal')">Cancel</button>
+        <button class="btn btn-primary" id="toothModalSaveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Settings Modal -->
+  <div class="modal-overlay" id="notifSettingsModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Notification Settings</h3>
+        <button class="modal-close" onclick="closeModal('notifSettingsModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted text-sm" style="margin-bottom:1.25rem;">Manage how you receive notifications from the clinic.</p>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <div class="notif-setting-label">Email Notifications</div>
+              <div class="notif-setting-sub">Appointment confirmations and updates</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifEmailToggle" onclick="toggleNotifPref('email')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-mobile-screen"></i>
+            <div>
+              <div class="notif-setting-label">SMS Notifications</div>
+              <div class="notif-setting-sub">Text reminders to your registered number</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifSmsToggle" onclick="toggleNotifPref('sms')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-bell"></i>
+            <div>
+              <div class="notif-setting-label">Push Notifications</div>
+              <div class="notif-setting-sub">Browser alerts for new appointments</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifPushToggle" onclick="toggleNotifPref('push')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('notifSettingsModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete Appointment Modal -->
+  <div class="modal-overlay" id="completeModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Mark as Completed</h3>
+        <button class="modal-close" onclick="closeModal('completeModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="completeModalBody">
+        <!-- Populated by openCompleteModal() -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('completeModal')">Cancel</button>
+        <button class="btn btn-success" id="completeConfirmBtn">Confirm Complete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Treatment Note Modal -->
+  <div class="modal-overlay" id="treatmentModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Add Treatment Note</h3>
+        <button class="modal-close" onclick="closeModal('treatmentModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="treatmentModalBody">
+        <!-- Populated by openAddTreatmentModal() -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('treatmentModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitTreatmentNote()">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create / Edit Promotion Modal -->
+  <div class="modal-overlay" id="promoModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="promoModalTitle">Create Promotion</h3>
+        <button class="modal-close" onclick="closeModal('promoModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="promoForm">
+          <input type="hidden" id="promoEditId" />
+          <div class="form-group">
+            <label class="form-label">Title *</label>
+            <input type="text" id="promoTitle" class="form-control" required maxlength="150" placeholder="e.g. 20% Off Teeth Whitening" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="promoDescription" class="form-control" rows="3" maxlength="1000" placeholder="Describe the offer…"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Badge Text</label>
+              <input type="text" id="promoBadgeText" class="form-control" maxlength="30" placeholder="e.g. LIMITED TIME" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select id="promoIsActive" class="form-control form-select">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Valid From</label>
+              <input type="date" id="promoValidFrom" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Valid To</label>
+              <input type="date" id="promoValidTo" class="form-control" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('promoModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitPromoForm()">Save Promotion</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/dashboard-admin.js"></script>
+</body>
+</html>

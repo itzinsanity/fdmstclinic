@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+  <title>Register — Flores-Dizon Dental Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-wrapper auth-wrapper--wide">
+    <!-- LEFT PANEL -->
+    <div class="auth-panel">
+      <a href="/" class="auth-brand">
+        <div class="brand-logo"><i class="fa-solid fa-tooth"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">Flores-Dizon</span>
+          <span class="brand-sub">Dental Clinic</span>
+        </div>
+      </a>
+
+      <div class="auth-card auth-card--wide">
+        <div class="auth-header">
+          <h1>Create your account</h1>
+          <p>Register to book appointments and manage your dental health</p>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="reg-steps">
+          <div class="reg-step active" data-step="1">
+            <div class="step-dot">1</div>
+            <span>Personal Info</span>
+          </div>
+          <div class="reg-step-line"></div>
+          <div class="reg-step" data-step="2">
+            <div class="step-dot">2</div>
+            <span>Contact</span>
+          </div>
+          <div class="reg-step-line"></div>
+          <div class="reg-step" data-step="3">
+            <div class="step-dot">3</div>
+            <span>Security</span>
+          </div>
+        </div>
+
+        <div id="alertBox" class="alert" style="display:none;"></div>
+
+        <form id="registerForm" novalidate>
+          <!-- STEP 1: Personal Info -->
+          <div class="form-step active" id="step1">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name <span class="req">*</span></label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+                  <input type="text" id="firstName" name="firstName" class="form-control" placeholder="e.g. Juan" required maxlength="50" />
+                </div>
+                <span class="field-error" id="firstNameError"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name <span class="req">*</span></label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+                  <input type="text" id="lastName" name="lastName" class="form-control" placeholder="e.g. dela Cruz" required maxlength="50" />
+                </div>
+                <span class="field-error" id="lastNameError"></span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Date of Birth</label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fa-solid fa-calendar"></i></span>
+                  <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Gender</label>
+                <div class="input-group">
+                  <span class="input-icon"><i class="fa-solid fa-venus-mars"></i></span>
+                  <select id="gender" name="gender" class="form-control form-select">
+                    <option value="">-- Select --</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer_not_to_say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-full" onclick="nextStep(1)">
+              Continue <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- STEP 2: Contact -->
+          <div class="form-step" id="step2">
+            <div class="form-group">
+              <label class="form-label">Email Address <span class="req">*</span></label>
+              <div class="input-group">
+                <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="you@example.com"
+                  required
+                  autocomplete="email"
+                />
+                <span class="input-validate-icon" id="emailValidIcon"></span>
+              </div>
+              <span class="field-error" id="emailError"></span>
+              <span class="field-hint" id="emailHint"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <div class="input-group">
+                <span class="input-icon"><i class="fa-solid fa-phone"></i></span>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="09XX-XXX-XXXX or +63XXXXXXXXXX" inputmode="numeric" />
+              </div>
+              <span class="field-hint" id="phoneHint">Format: 09xxxxxxxxx (11 digits) or +639xxxxxxxxx</span>
+              <span class="field-error" id="phoneError"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">City / Municipality</label>
+              <div class="input-group">
+                <span class="input-icon"><i class="fa-solid fa-location-dot"></i></span>
+                <input type="text" id="city" name="city" class="form-control" placeholder="e.g. Cabanatuan City" />
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="btn btn-outline" onclick="prevStep(2)">
+                <i class="fa-solid fa-arrow-left"></i> Back
+              </button>
+              <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                Continue <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Security -->
+          <div class="form-step" id="step3">
+            <div class="form-group">
+              <label class="form-label">Password <span class="req">*</span></label>
+              <div class="input-group">
+                <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Create a strong password"
+                  required
+                  autocomplete="new-password"
+                />
+                <button type="button" class="input-toggle-btn" id="togglePassword" aria-label="Show/hide password" tabindex="-1">
+                  <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                </button>
+              </div>
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-bar">
+                  <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                <span class="strength-label" id="strengthLabel">Enter a password</span>
+              </div>
+              <ul class="password-rules" id="passwordRules">
+                <li id="rule-length"><i class="fa-solid fa-xmark"></i> At least 8 characters</li>
+                <li id="rule-upper"><i class="fa-solid fa-xmark"></i> One uppercase letter</li>
+                <li id="rule-lower"><i class="fa-solid fa-xmark"></i> One lowercase letter</li>
+                <li id="rule-number"><i class="fa-solid fa-xmark"></i> One number</li>
+              </ul>
+              <span class="field-error" id="passwordError"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Confirm Password <span class="req">*</span></label>
+              <div class="input-group">
+                <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="form-control"
+                  placeholder="Repeat your password"
+                  required
+                  autocomplete="new-password"
+                />
+                <button type="button" class="input-toggle-btn" id="toggleConfirm" aria-label="Show/hide password" tabindex="-1">
+                  <i class="fa-solid fa-eye" id="toggleConfirmIcon"></i>
+                </button>
+              </div>
+              <span class="field-error" id="confirmPasswordError"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-check">
+                <input type="checkbox" id="agreeTerms" required />
+                <span>I agree to the clinic's privacy policies and consent to the collection of my health and personal information for treatment purposes.</span>
+              </label>
+              <span class="field-error" id="termsError"></span>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="btn btn-outline" onclick="prevStep(3)">
+                <i class="fa-solid fa-arrow-left"></i> Back
+              </button>
+              <button type="submit" class="btn btn-primary" id="registerBtn">
+                <span class="btn-text"><i class="fa-solid fa-user-plus"></i> Create Account</span>
+                <span class="btn-spinner" style="display:none;"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="auth-divider"><span>or</span></div>
+        <p class="auth-switch">
+          Already have an account?
+          <a href="/login.html" class="auth-link">Sign in here</a>
+        </p>
+        <p class="auth-back">
+          <a href="/" class="auth-link-muted"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-visual">
+      <div class="visual-content">
+        <div class="visual-icon"><i class="fa-solid fa-clipboard-user"></i></div>
+        <h2>Your Health, Our Priority</h2>
+        <p>Create your patient profile and get access to our full range of digital clinic services.</p>
+        <div class="visual-features">
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Online appointment booking</span>
+          </div>
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Digital health records</span>
+          </div>
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Appointment history &amp; tracking</span>
+          </div>
+          <div class="visual-feature">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Your data kept safe and private</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth-guard.js"></script>
+  <script>
+    let currentStep = 1;
+
+    // Store original rule text for later reference
+    const originalRuleText = {
+      length: 'At least 8 characters',
+      upper: 'One uppercase letter',
+      lower: 'One lowercase letter',
+      number: 'One number'
+    };
+
+    const emailInput = document.getElementById('email');
+    const emailValidIcon = document.getElementById('emailValidIcon');
+    const emailHint = document.getElementById('emailHint');
+
+    // Real-time email validation feedback
+    emailInput.addEventListener('input', () => {
+      const val = emailInput.value.trim();
+      if (!val) { emailValidIcon.innerHTML = ''; emailHint.textContent = ''; return; }
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      if (valid) {
+        emailValidIcon.innerHTML = '<i class="fa-solid fa-circle-check" style="color:var(--success)"></i>';
+        emailHint.textContent = '';
+        emailInput.classList.remove('input-error');
+        emailInput.classList.add('input-valid');
+      } else {
+        emailValidIcon.innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:var(--danger)"></i>';
+        emailHint.textContent = 'Please enter a valid email (e.g. name@domain.com)';
+        emailInput.classList.add('input-error');
+        emailInput.classList.remove('input-valid');
+      }
+    });
+
+    // Real-time phone validation (Philippines only)
+    const phoneInput = document.getElementById('phone');
+    const phoneError = document.getElementById('phoneError');
+    const phoneHint = document.getElementById('phoneHint');
+
+    function validatePhilippinePhone(phone) {
+      // Remove all non-digit characters except leading +
+      const cleaned = phone.replace(/\D/g, '').replace(/^\+/, '');
+
+      // Check format 1: 0917XXXXXXX (starts with 0, 11 digits total)
+      if (/^09\d{9}$/.test(cleaned)) return true;
+
+      // Check format 2: 639XXXXXXXX (country code, 12 digits total)
+      if (/^639\d{9}$/.test(cleaned)) return true;
+
+      // Allow if user hasn't finished typing or field is empty
+      if (!phone) return null;
+
+      return false;
+    }
+
+    phoneInput.addEventListener('input', function() {
+      const val = this.value.trim();
+
+      // Only allow digits, +, and hyphens
+      let cleaned = val.replace(/[^\d+\-]/g, '');
+      if (this.value !== cleaned) {
+        this.value = cleaned;
+      }
+
+      if (!val) {
+        phoneError.textContent = '';
+        phoneHint.textContent = 'Format: 09xxxxxxxxx (11 digits) or +639xxxxxxxxx';
+        return;
+      }
+
+      const result = validatePhilippinePhone(val);
+
+      if (result === false) {
+        phoneError.textContent = 'Invalid Phone Number. Use  09XXXXXXXXX (11 digits) or +639XXXXXXXXX format.';
+        phoneHint.textContent = '';
+        this.classList.add('input-error');
+      } else if (result === true) {
+        phoneError.textContent = '';
+        phoneHint.textContent = '✓ Valid Phone Number';
+        this.classList.remove('input-error');
+      } else {
+        phoneError.textContent = '';
+        phoneHint.textContent = 'Format: 09xxxxxxxxx (11 digits) or +639xxxxxxxxx';
+        this.classList.remove('input-error');
+      }
+    });
+
+    // Password show/hide
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('togglePasswordIcon');
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      icon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+    });
+
+    document.getElementById('toggleConfirm').addEventListener('click', () => {
+      const input = document.getElementById('confirmPassword');
+      const icon = document.getElementById('toggleConfirmIcon');
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      icon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+    });
+
+    // Password strength checker with FIXED rule text
+    document.getElementById('password').addEventListener('input', function () {
+      const val = this.value;
+      const rules = {
+        length: val.length >= 8,
+        upper: /[A-Z]/.test(val),
+        lower: /[a-z]/.test(val),
+        number: /\d/.test(val)
+      };
+      const passed = Object.values(rules).filter(Boolean).length;
+
+      // Update rule indicators - ONLY change icon, keep text fixed
+      Object.keys(rules).forEach(key => {
+        const el = document.getElementById('rule-' + key);
+        const icon = rules[key]
+          ? '<i class="fa-solid fa-check"></i>'
+          : '<i class="fa-solid fa-xmark"></i>';
+
+        // Rebuild the HTML with icon + fixed text
+        el.innerHTML = icon + ' ' + originalRuleText[key];
+
+        if (rules[key]) {
+          el.classList.add('rule-pass');
+        } else {
+          el.classList.remove('rule-pass');
+        }
+      });
+
+      // Strength bar
+      const fill = document.getElementById('strengthFill');
+      const label = document.getElementById('strengthLabel');
+      const pct = (passed / 4) * 100;
+      fill.style.width = pct + '%';
+
+      if (passed <= 1) { fill.className = 'strength-fill strength-weak'; label.textContent = 'Weak'; }
+      else if (passed === 2) { fill.className = 'strength-fill strength-fair'; label.textContent = 'Fair'; }
+      else if (passed === 3) { fill.className = 'strength-fill strength-good'; label.textContent = 'Good'; }
+      else { fill.className = 'strength-fill strength-strong'; label.textContent = 'Strong'; }
+    });
+
+    function setActiveStep(stepNum) {
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.reg-step').forEach(s => s.classList.remove('active', 'done'));
+      document.getElementById('step' + stepNum).classList.add('active');
+
+      document.querySelectorAll('.reg-step').forEach(s => {
+        const n = parseInt(s.dataset.step);
+        if (n < stepNum) s.classList.add('done');
+        else if (n === stepNum) s.classList.add('active');
+      });
+
+      currentStep = stepNum;
+    }
+
+    function nextStep(step) {
+      if (step === 1) {
+        const first = document.getElementById('firstName').value.trim();
+        const last = document.getElementById('lastName').value.trim();
+        document.getElementById('firstNameError').textContent = '';
+        document.getElementById('lastNameError').textContent = '';
+        if (!first) {
+          document.getElementById('firstNameError').textContent = 'First name is required.';
+          return;
+        }
+        if (!last) {
+          document.getElementById('lastNameError').textContent = 'Last name is required.';
+          return;
+        }
+        setActiveStep(2);
+      } else if (step === 2) {
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('phoneError').textContent = '';
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+          return;
+        }
+
+        if (phone) {
+          const phoneValid = validatePhilippinePhone(phone);
+          if (phoneValid !== true) {
+            document.getElementById('phoneError').textContent = 'Invalid Philippine phone number. Use 09XXXXXXXXX (11 digits) or +639XXXXXXXXX format.';
+            return;
+          }
+        }
+
+        setActiveStep(3);
+      }
+    }
+
+    function prevStep(step) {
+      setActiveStep(step - 1);
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const phone = document.getElementById('phone').value.trim();
+      const agreeTerms = document.getElementById('agreeTerms').checked;
+
+      document.getElementById('passwordError').textContent = '';
+      document.getElementById('confirmPasswordError').textContent = '';
+      document.getElementById('phoneError').textContent = '';
+      document.getElementById('termsError').textContent = '';
+
+      let valid = true;
+
+      if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password)) {
+        document.getElementById('passwordError').textContent = 'Password must have uppercase, lowercase, and a number (min 8 chars).';
+        valid = false;
+      }
+      if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+        valid = false;
+      }
+      if (phone && validatePhilippinePhone(phone) !== true) {
+        document.getElementById('phoneError').textContent = 'Invalid Philippine phone number format.';
+        valid = false;
+      }
+      if (!agreeTerms) {
+        document.getElementById('termsError').textContent = 'You must agree to the terms to register.';
+        valid = false;
+      }
+      if (!valid) return;
+
+      const btn = document.getElementById('registerBtn');
+      btn.querySelector('.btn-text').style.display = 'none';
+      btn.querySelector('.btn-spinner').style.display = 'inline';
+      btn.disabled = true;
+
+      const payload = {
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password,
+        phone: phone || undefined,
+        dateOfBirth: document.getElementById('dateOfBirth').value || undefined,
+        gender: document.getElementById('gender').value || undefined,
+        address: { city: document.getElementById('city').value.trim() || undefined }
+      };
+
+      try {
+        const data = await API.post('/auth/register', payload);
+
+        if (data.success) {
+          Auth.setToken(data.token);
+          Auth.setUser(data.user);
+          UI.showToast('Account created! Welcome, ' + data.user.firstName + '!', 'success');
+          setTimeout(() => { window.location.href = '/dashboard/patient.html'; }, 600);
+        } else {
+          const msg = data.errors ? data.errors.map(e => e.msg).join(' ') : (data.message || 'Registration failed.');
+          alertBox.className = 'alert alert-error';
+          alertBox.textContent = msg;
+          alertBox.style.display = 'block';
+        }
+      } catch (err) {
+        alertBox.className = 'alert alert-error';
+        alertBox.textContent = err.message || 'Unable to connect. Please check your connection.';
+        alertBox.style.display = 'block';
+      } finally {
+        btn.querySelector('.btn-text').style.display = 'inline';
+        btn.querySelector('.btn-spinner').style.display = 'none';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

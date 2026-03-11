@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+  <title>Staff Dashboard — FDMST</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-body">
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <div class="brand-logo"><i class="fa-solid fa-tooth"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">Flores-Dizon</span>
+          <span class="brand-role">Staff Panel</span>
+        </div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose"><i class="fa-solid fa-xmark"></i></button>
+      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" title="Toggle sidebar">
+        <i class="fa-solid fa-chevron-left" id="collapseIcon"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <span class="sidebar-section-label">Overview</span>
+        <a href="#" class="sidebar-item active" data-section="overview">
+          <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="calendar">
+          <i class="fa-solid fa-calendar-days"></i><span>Today's Schedule</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <span class="sidebar-section-label">Operations</span>
+        <a href="#" class="sidebar-item" data-section="appointments">
+          <i class="fa-solid fa-calendar-check"></i><span>Appointments</span>
+          <span class="sidebar-badge" id="pendingBadge" style="display:none">0</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="patients">
+          <i class="fa-solid fa-users"></i><span>Patients</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="records">
+          <i class="fa-solid fa-tooth"></i><span>Teeth Records</span>
+        </a>
+        <a href="#" class="sidebar-item" data-section="inventory">
+          <i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span>
+          <span class="sidebar-badge" id="lowStockBadge" style="display:none"></span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="sidebarUser">
+        <div class="user-avatar" id="userAvatar">ST</div>
+        <div class="user-details">
+          <span class="user-name" id="userName">Staff</span>
+          <span class="user-role">Clinic Staff</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="dashboard-main" id="dashboardMain">
+    <header class="topbar">
+      <button class="topbar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title" id="topbarTitle">Staff Dashboard</div>
+      <div class="topbar-actions">
+        <span class="topbar-date" id="topbarDate"></span>
+
+        <!-- Notification Bell -->
+        <div class="notif-wrapper" id="notifWrapper">
+          <button class="notif-btn" id="notifBtn" onclick="toggleNotifDropdown()">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-badge" id="notifBadge" style="display:none">0</span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">
+              <span>Notifications</span>
+              <button class="notif-mark-read" onclick="markAllNotifsRead()">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notifList">
+              <div class="notif-empty">
+                <i class="fa-solid fa-bell-slash"></i>
+                <p>No notifications</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-wrapper" id="profileWrapper">
+          <button class="profile-btn" id="profileBtn" onclick="toggleProfileDropdown()">
+            <div class="user-avatar sm" id="topbarAvatar">ST</div>
+            <i class="fa-solid fa-chevron-down profile-chevron" id="profileChevron"></i>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-dropdown-header">
+              <div class="user-avatar" id="profileDropAvatar">ST</div>
+              <div>
+                <div class="profile-dropdown-name" id="profileDropName">Staff</div>
+                <div class="profile-dropdown-email" id="profileDropRole">Clinic Staff</div>
+              </div>
+            </div>
+            <div class="profile-dropdown-menu">
+              <div class="profile-menu-item">
+                <i class="fa-solid fa-moon"></i>
+                <span>Dark Mode</span>
+                <div class="theme-toggle" id="themeToggle" onclick="toggleDarkMode()">
+                  <div class="theme-toggle-thumb"></div>
+                </div>
+              </div>
+              <button class="profile-menu-item" onclick="closeProfileDropdown(); openNotifSettings()">
+                <i class="fa-solid fa-bell"></i>
+                <span>Notifications</span>
+              </button>
+              <div class="profile-menu-divider"></div>
+              <button class="profile-menu-item danger" onclick="closeProfileDropdown(); Auth.logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ======================== SECTION: OVERVIEW ======================== -->
+    <section class="content-section active" id="section-overview">
+      <div class="section-title-bar">
+        <h2>Staff Dashboard</h2>
+        <span class="section-sub" id="overviewDate"></span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon"><i class="fa-solid fa-calendar-check"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiToday">—</span>
+            <span class="kpi-label">Appointments Today</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-orange">
+          <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiPending">—</span>
+            <span class="kpi-label">Pending</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-teal">
+          <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiConfirmed">—</span>
+            <span class="kpi-label">Confirmed</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-red">
+          <div class="kpi-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-value" id="kpiLowStock">—</span>
+            <span class="kpi-label">Low Stock Items</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card" style="grid-column: span 2;">
+          <div class="chart-header">
+            <span class="chart-title">This Week's Appointments</span>
+          </div>
+          <div class="chart-body">
+            <canvas id="chartWeek"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Services Today</span>
+          </div>
+          <div class="chart-body">
+            <canvas id="chartTodayServices"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: TODAY ======================== -->
+    <section class="content-section" id="section-calendar">
+      <div class="section-title-bar">
+        <h2>Today's Appointments</h2>
+        <span id="todayDateLabel" class="section-sub"></span>
+      </div>
+      <div id="todayAppointments">
+        <div class="loading-placeholder"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: APPOINTMENTS ======================== -->
+    <section class="content-section" id="section-appointments">
+      <div class="section-title-bar">
+        <h2>Manage Appointments</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="apptSearch" placeholder="Search patient or service..." class="form-control" oninput="debounceApptSearch()" />
+          </div>
+          <select id="apptStatusFilter" class="form-control form-control-sm" onchange="loadAppointments()">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <input type="date" id="apptDateFilter" class="form-control form-control-sm" onchange="loadAppointments()" />
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="apptTableBody">
+              <tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="apptPagination"></div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: PATIENTS ======================== -->
+    <section class="content-section" id="section-patients">
+      <div class="section-title-bar">
+        <h2>Patient List</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="patientSearch" placeholder="Search name or email..." class="form-control" />
+          </div>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Registered</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientTableBody">
+              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="patientPagination"></div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: TEETH RECORDS ======================== -->
+    <section class="content-section" id="section-records">
+      <div class="section-title-bar">
+        <h2>Teeth Records</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="recordSearchInput" placeholder="Search patient..." class="form-control" />
+          </div>
+        </div>
+      </div>
+      <div id="recordsContent">
+        <div class="empty-state">
+          <i class="fa-solid fa-tooth"></i>
+          <p>Search for a patient to view their teeth record.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== SECTION: INVENTORY ======================== -->
+    <section class="content-section" id="section-inventory">
+      <div class="section-title-bar">
+        <h2>Inventory</h2>
+        <div class="section-controls">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="invSearch" placeholder="Search item name..." class="form-control" />
+          </div>
+          <select id="invCategoryFilter" class="form-control form-control-sm" onchange="loadInventory()">
+            <option value="">All Categories</option>
+            <option>Anesthetics</option><option>Restorative Materials</option>
+            <option>Diagnostic Tools</option><option>Surgical Instruments</option>
+            <option>Sterilization Supplies</option><option>PPE</option>
+            <option>Impression Materials</option><option>Orthodontic Supplies</option>
+            <option>Radiography Supplies</option><option>Infection Control</option>
+            <option>Office Supplies</option><option>Other</option>
+          </select>
+          <label class="form-check">
+            <input type="checkbox" id="lowStockFilter" onchange="loadInventory()" />
+            <span>Low stock only</span>
+          </label>
+          <button class="btn btn-primary btn-sm" onclick="openAddInventoryModal()">
+            <i class="fa-solid fa-plus"></i> Add Item
+          </button>
+        </div>
+      </div>
+      <div class="kpi-grid" id="invSummary" style="margin-bottom:1rem;"></div>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Unit</th>
+                <th>Reorder Point</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invTableBody">
+              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="invPagination"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="apptModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Appointment Details</h3>
+        <button class="modal-close" onclick="closeModal('apptModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="apptModalBody"></div>
+      <div class="modal-footer" id="apptModalFooter"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="patientModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3>Patient Profile</h3>
+        <button class="modal-close" onclick="closeModal('patientModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="patientModalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="addInvModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="addInvTitle">Add Inventory Item</h3>
+        <button class="modal-close" onclick="closeModal('addInvModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="addInvForm">
+          <input type="hidden" id="invItemId" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Item Name *</label>
+              <input type="text" id="invName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="invCategory" class="form-control form-select" required>
+                <option value="">-- Select --</option>
+                <option>Anesthetics</option><option>Restorative Materials</option>
+                <option>Diagnostic Tools</option><option>Surgical Instruments</option>
+                <option>Sterilization Supplies</option><option>PPE</option>
+                <option>Impression Materials</option><option>Orthodontic Supplies</option>
+                <option>Radiography Supplies</option><option>Infection Control</option>
+                <option>Office Supplies</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Quantity *</label>
+              <input type="number" id="invQty" class="form-control" min="0" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit</label>
+              <input type="text" id="invUnit" class="form-control" placeholder="piece, box, ml..." />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Minimum Stock</label>
+              <input type="number" id="invMinStock" class="form-control" min="0" value="5" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reorder Point</label>
+              <input type="number" id="invReorder" class="form-control" min="0" value="10" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('addInvModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitInventoryForm()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="adjustStockModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Adjust Stock</h3>
+        <button class="modal-close" onclick="closeModal('adjustStockModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="adjustItemId" />
+        <div class="form-group">
+          <label class="form-label">Item: <strong id="adjustItemName"></strong></label>
+          <p class="hint-text">Current: <strong id="adjustCurrentQty"></strong></p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Action *</label>
+          <select id="adjustAction" class="form-control form-select">
+            <option value="restock">Restock (add)</option>
+            <option value="use">Use (deduct)</option>
+            <option value="disposal">Disposal (deduct)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quantity *</label>
+          <input type="number" id="adjustQty" class="form-control" min="1" value="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <input type="text" id="adjustNotes" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('adjustStockModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitStockAdjust()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooth Condition Edit Modal -->
+  <div class="modal-overlay" id="toothModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3 id="toothModalLabel">Edit Tooth</h3>
+        <button class="modal-close" onclick="closeModal('toothModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="toothModalNum" />
+        <div class="form-group">
+          <label class="form-label">Condition</label>
+          <select id="toothCondition" class="form-control form-select" style="margin-bottom:1rem;">
+            <option value="healthy">Healthy</option>
+            <option value="decayed">Decayed</option>
+            <option value="filled">Filled</option>
+            <option value="missing">Missing</option>
+            <option value="crowned">Crowned</option>
+            <option value="implant">Implant</option>
+            <option value="bridge">Bridge</option>
+            <option value="veneer">Veneer</option>
+            <option value="needs_treatment">Needs Treatment</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea id="toothNotes" class="form-control" rows="2" placeholder="Clinical notes..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('toothModal')">Cancel</button>
+        <button class="btn btn-primary" id="toothModalSaveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Settings Modal -->
+  <div class="modal-overlay" id="notifSettingsModal">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3>Notification Settings</h3>
+        <button class="modal-close" onclick="closeModal('notifSettingsModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted text-sm" style="margin-bottom:1.25rem;">Manage how you receive notifications from the clinic.</p>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <div class="notif-setting-label">Email Notifications</div>
+              <div class="notif-setting-sub">Appointment confirmations and updates</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifEmailToggle" onclick="toggleNotifPref('email')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-mobile-screen"></i>
+            <div>
+              <div class="notif-setting-label">SMS Notifications</div>
+              <div class="notif-setting-sub">Text reminders to your registered number</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifSmsToggle" onclick="toggleNotifPref('sms')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="notif-setting-row">
+          <div class="notif-setting-info">
+            <i class="fa-solid fa-bell"></i>
+            <div>
+              <div class="notif-setting-label">Push Notifications</div>
+              <div class="notif-setting-sub">Browser alerts for new appointments</div>
+            </div>
+          </div>
+          <div class="theme-toggle" id="notifPushToggle" onclick="toggleNotifPref('push')">
+            <div class="theme-toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('notifSettingsModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/dashboard-staff.js"></script>
+</body>
+</html>

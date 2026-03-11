@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+  <meta name="description" content="Flores-Dizon Dental Clinic — Professional dental care you can trust. Book appointments online." />
+  <title>Flores-Dizon Dental Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/landing.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="mainNav">
+    <div class="nav-container">
+      <a href="/" class="navbar-brand">
+        <div class="brand-logo">
+          <span></span>
+          <i class="fa-solid fa-tooth"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Flores Dizon</span>
+          <span class="brand-sub">Dental Clinic</span>
+        </div>
+      </a>
+      <button class="nav-mobile-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#why-us" class="nav-link">About</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li class="nav-cta-group">
+          <div class="nav-cta-group-inner">
+            <a href="/login.html" class="btn btn-outline nav-cta">Sign In</a>
+            <a href="/register.html" class="btn btn-primary nav-cta">Book Now</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section" id="home">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-star"></i>
+          Trusted Dental Care Since 1995
+        </div>
+        <h1 class="hero-title">
+          Your Smile Deserves<br />
+          <span class="hero-highlight">Expert Care</span>
+        </h1>
+        <p class="hero-desc">
+          Comprehensive dental services in a comfortable, modern environment.
+          From routine checkups to advanced procedures — we care for your complete oral health.
+        </p>
+        <div class="hero-actions">
+          <a href="/register.html" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-calendar-plus"></i>
+            Book an Appointment
+          </a>
+          <a href="#services" class="btn btn-outline-white btn-lg">
+            <i class="fa-solid fa-list"></i>
+            Our Services
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" data-target="1500">0</span><span>+</span>
+            <span class="stat-label">Patients Served</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="12">0</span><span>+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="98">0</span><span>%</span>
+            <span class="stat-label">Satisfaction Rate</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-main">
+          <div class="hero-card-icon">
+            <i class="fa-solid fa-tooth"></i>
+          </div>
+          <h3>Next Available Slot</h3>
+          <p>Book your appointment today</p>
+          <a href="/register.html" class="btn btn-primary">Get Started</a>
+        </div>
+        <div class="hero-card-float card-float-1">
+          <i class="fa-solid fa-check-circle"></i>
+          <span>Appointment Confirmed</span>
+        </div>
+        <div class="hero-card-float card-float-2">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Safe &amp; Hygienic</span>
+        </div>
+        <div class="hero-card-float card-float-3">
+          <i class="fa-regular fa-clock"></i>
+          <span>Mon–Sat, 8AM–5PM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section" id="services">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">What We Offer</span>
+        <h2 class="section-title">Comprehensive Dental Services</h2>
+        <p class="section-desc">From preventive care to specialized treatments, we provide everything your smile needs under one roof.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon service-icon--blue">
+            <i class="fa-solid fa-x-ray"></i>
+          </div>
+          <h3>Dental Radiographs</h3>
+          <p>Digital X-ray imaging for accurate diagnosis of hidden tooth decay, bone loss, and jaw issues.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--red">
+            <i class="fa-solid fa-syringe"></i>
+          </div>
+          <h3>Oral Surgery</h3>
+          <p>Safe and precise surgical procedures performed under professional care and sterile conditions.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--purple">
+            <i class="fa-solid fa-teeth"></i>
+          </div>
+          <h3>Veneers</h3>
+          <p>Thin porcelain or composite shells bonded to the front of teeth for a natural, polished smile.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--teal">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3>Tooth Sealant</h3>
+          <p>Protective coating applied to back teeth to prevent cavities and decay in hard-to-reach areas.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--green">
+            <i class="fa-solid fa-flask"></i>
+          </div>
+          <h3>Fluoride Treatment</h3>
+          <p>Professional fluoride application to strengthen enamel and reduce the risk of tooth decay.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--orange">
+            <i class="fa-solid fa-ruler-combined"></i>
+          </div>
+          <h3>Braces / Orthodontic Treatment</h3>
+          <p>Comprehensive teeth alignment solutions including metal braces and orthodontic planning.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--blue">
+            <i class="fa-solid fa-tooth"></i>
+          </div>
+          <h3>Tooth Extraction</h3>
+          <p>Safe and comfortable extractions performed with precision and care when necessary.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--teal">
+            <i class="fa-solid fa-fill-drip"></i>
+          </div>
+          <h3>Dental Restoration</h3>
+          <p>Restoring damaged or decayed teeth with durable, natural-looking composite materials.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--purple">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <h3>Crowns / Caps</h3>
+          <p>Custom-made dental crowns to protect, cover, and restore the shape of a damaged tooth.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--orange">
+            <i class="fa-solid fa-teeth-open"></i>
+          </div>
+          <h3>Fixed Partial Dentures (FPD)</h3>
+          <p>Permanent bridge restorations that fill gaps left by missing teeth for a complete bite.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--red">
+            <i class="fa-solid fa-circle-dot"></i>
+          </div>
+          <h3>Dentures</h3>
+          <p>Removable full or partial dentures crafted for comfort, function, and a natural appearance.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--green">
+            <i class="fa-solid fa-hand-sparkles"></i>
+          </div>
+          <h3>Oral Prophylaxis / Cleaning</h3>
+          <p>Professional scaling and polishing to remove plaque, tartar, and surface stains effectively.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--blue">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <h3>Root Canal Therapy (RCT)</h3>
+          <p>Effective treatment to save infected teeth and relieve severe toothache by removing damaged pulp.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon service-icon--teal">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <h3>Oral Check-up</h3>
+          <p>Thorough examination of your teeth, gums, and mouth to maintain long-term oral health.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="why-section" id="why-us">
+    <div class="section-container">
+      <div class="why-grid">
+        <div class="why-content">
+          <span class="section-label">Why Choose Us</span>
+          <h2 class="section-title">Dental Care Built Around You</h2>
+          <p class="why-desc">
+            At Flores-Dizon Dental Clinic, we combine years of clinical expertise with modern technology
+            and a patient-first approach to deliver outstanding dental care.
+          </p>
+          <div class="why-features">
+            <div class="why-feature">
+              <div class="why-icon"><i class="fa-solid fa-user-doctor"></i></div>
+              <div class="why-feature-body">
+                <h4>Experienced Dentists</h4>
+                <p>Over a decade of experience serving our community with quality dental care.</p>
+              </div>
+            </div>
+            <div class="why-feature">
+              <div class="why-icon"><i class="fa-solid fa-microscope"></i></div>
+              <div class="why-feature-body">
+                <h4>Modern Equipment</h4>
+                <p>State-of-the-art dental technology for accurate diagnosis and treatment.</p>
+              </div>
+            </div>
+            <div class="why-feature">
+              <div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div class="why-feature-body">
+                <h4>Strict Sterilization</h4>
+                <p>Hospital-grade sterilization protocols to ensure your safety every visit.</p>
+              </div>
+            </div>
+            <div class="why-feature">
+              <div class="why-icon"><i class="fa-solid fa-calendar-check"></i></div>
+              <div class="why-feature-body">
+                <h4>Easy Scheduling</h4>
+                <p>Book appointments online anytime — no phone calls needed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="why-visual">
+          <div class="why-card-main">
+            <div class="why-card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+            <h3>Patient-Centered Care</h3>
+            <p>Every treatment plan is tailored to your unique needs and comfort level.</p>
+            <div class="why-rating">
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <span>4.9/5 from 300+ reviews</span>
+            </div>
+          </div>
+          <div class="why-badge-float why-badge-1">
+            <div class="why-badge-float-icon">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <span>Top-Rated Dental Clinic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="steps-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">Getting Started</span>
+        <h2 class="section-title">Book Your Appointment in Minutes</h2>
+        <p class="section-desc">Our simple online booking process gets you set up quickly and easily.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-wrapper">
+          <div class="step-connector"></div>
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <div class="step-icon step-icon--teal"><i class="fa-solid fa-user-plus"></i></div>
+            <h3 class="step-title">Create Account</h3>
+            <p class="step-desc">Register with your personal details and medical information to set up your patient profile.</p>
+          </div>
+        </div>
+        <div class="step-wrapper">
+          <div class="step-connector"></div>
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <div class="step-icon step-icon--blue"><i class="fa-solid fa-calendar-days"></i></div>
+            <h3 class="step-title">Choose a Schedule</h3>
+            <p class="step-desc">Select your preferred date, time slot, and the type of dental service you need.</p>
+          </div>
+        </div>
+        <div class="step-wrapper">
+          <div class="step-connector"></div>
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <div class="step-icon step-icon--green"><i class="fa-solid fa-circle-check"></i></div>
+            <h3 class="step-title">Confirm &amp; Attend</h3>
+            <p class="step-desc">Receive your appointment confirmation and show up at the clinic on your scheduled date.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">Patient Reviews</span>
+        <h2 class="section-title">What Our Patients Say</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"The staff is incredibly kind and professional. My teeth cleaning was painless and the clinic is very clean. Highly recommend!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar avatar--teal">MR</div>
+            <div class="author-info">
+              <p class="author-name">Maria R.</p>
+              <p class="author-role">Regular Patient</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"I had a root canal done here and it was so much more comfortable than I expected. The dentist explained every step. 10/10 experience."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar avatar--blue">JC</div>
+            <div class="author-info">
+              <p class="author-name">Juan C.</p>
+              <p class="author-role">Patient since 2021</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Booking online was so easy! The online system is great — I could see available slots and pick the one that worked for me without any phone calls."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar avatar--purple">AL</div>
+            <div class="author-info">
+              <p class="author-name">Ana L.</p>
+              <p class="author-role">New Patient</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMOTIONS STRIP -->
+  <section class="promo-strip">
+    <div class="section-container">
+      <div class="promo-strip-inner">
+        <div class="promo-strip-text">
+          <span class="promo-strip-label">Exclusive Offers</span>
+          <h2>Get Special Deals &amp; Priority Booking Access</h2>
+          <p>Be the first to know about seasonal discounts, oral health tips, and limited appointment slots — delivered straight to you.</p>
+        </div>
+        <button class="btn btn-primary btn-lg promo-strip-btn" onclick="openSupportPanel()">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          Subscribe for Deals
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="section-container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <span class="section-label">Get in Touch</span>
+          <h2 class="section-title">Visit or Contact Us</h2>
+          <div class="contact-items">
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="contact-item-body">
+                <h4>Address</h4>
+                <p>Flores-Dizon Dental Clinic, Nueva Ecija, Philippines</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+              <div class="contact-item-body">
+                <h4>Phone</h4>
+                <p>(044) 000-0000</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div class="contact-item-body">
+                <h4>Email</h4>
+                <p>info@floresdizondental.com</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+              <div class="contact-item-body">
+                <h4>Clinic Hours</h4>
+                <p>Monday – Saturday: 8:00 AM – 5:00 PM<br />Sunday: Closed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-cta">
+          <div class="cta-card">
+            <div class="cta-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+            <h3>Ready to Book?</h3>
+            <p>Create your free patient account and book your first appointment in just a few minutes.</p>
+            <div class="cta-login">
+              <a href="/register.html" class="btn-primary-full">
+                <i class="fa-solid fa-user-plus"></i>
+                Register as a Patient
+              </a>
+              <a href="/login.html" class="btn-outline-teal">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Sign In
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#home" class="navbar-brand" style="position:static;transform:none;margin-bottom:.85rem;">
+            <div class="brand-logo"><i class="fa-solid fa-tooth"></i></div>
+            <div class="brand-text">
+              <span class="brand-name">Flores Dizon</span>
+              <span class="brand-sub">Dental Clinic</span>
+            </div>
+          </a>
+          <p class="footer-brand-desc">Providing comprehensive dental care to the community of Nueva Ecija with a patient-first approach and modern technology.</p>
+        </div>
+        <div class="footer-links-group">
+          <div class="footer-links-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#why-us">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-col">
+            <h4>Patient Portal</h4>
+            <ul class="footer-links">
+              <li><a href="/login.html">Sign In</a></li>
+              <li><a href="/register.html">Register</a></li>
+              <li><a href="#contact">Book Appointment</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Flores-Dizon Dental Clinic. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SUPPORT / PROMOTIONS PANEL -->
+  <div class="support-overlay" id="supportOverlay" onclick="closeSupportPanel()"></div>
+  <div class="support-panel" id="supportPanel" role="dialog" aria-modal="true" aria-label="Subscribe for Deals">
+    <div class="support-panel-header">
+      <div class="support-panel-title">
+        <i class="fa-solid fa-tag"></i>
+        <h3>Exclusive Deals &amp; Offers</h3>
+      </div>
+      <button class="support-panel-close" onclick="closeSupportPanel()" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="support-panel-body" id="supportPanelBody">
+      <p class="support-panel-intro">
+        Share your details below and we'll reach out with exclusive promotions, priority booking access, and helpful dental care tips.
+      </p>
+      <form class="support-form" id="supportForm" onsubmit="submitSupportForm(event)" novalidate>
+        <div class="support-field">
+          <label for="supportName">Full Name <span class="support-required">*</span></label>
+          <input type="text" id="supportName" placeholder="e.g. Maria Santos" autocomplete="name" required />
+          <span class="support-error" id="supportNameErr"></span>
+        </div>
+        <div class="support-field">
+          <label for="supportEmail">Email Address <span class="support-required">*</span></label>
+          <input type="email" id="supportEmail" placeholder="you@email.com" autocomplete="email" required />
+          <span class="support-error" id="supportEmailErr"></span>
+        </div>
+        <div class="support-field">
+          <label for="supportPhone">Phone Number <span class="support-optional">(optional)</span></label>
+          <input type="tel" id="supportPhone" placeholder="+63 9XX XXX XXXX" autocomplete="tel" />
+        </div>
+        <div class="support-field">
+          <label>Services You're Interested In <span class="support-optional">(optional)</span></label>
+          <div class="support-checkboxes">
+            <label class="support-check"><input type="checkbox" value="Oral Check-up" /> Oral Check-up</label>
+            <label class="support-check"><input type="checkbox" value="Oral Prophylaxis / Cleaning" /> Oral Prophylaxis / Cleaning</label>
+            <label class="support-check"><input type="checkbox" value="Tooth Extraction" /> Tooth Extraction</label>
+            <label class="support-check"><input type="checkbox" value="Dental Restoration" /> Dental Restoration</label>
+            <label class="support-check"><input type="checkbox" value="Root Canal Therapy (RCT)" /> Root Canal Therapy (RCT)</label>
+            <label class="support-check"><input type="checkbox" value="Crowns / Caps" /> Crowns / Caps</label>
+            <label class="support-check"><input type="checkbox" value="Veneers" /> Veneers</label>
+            <label class="support-check"><input type="checkbox" value="Braces / Orthodontic Treatment" /> Braces / Orthodontic Treatment</label>
+            <label class="support-check"><input type="checkbox" value="Dentures" /> Dentures</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary support-submit">
+          <i class="fa-solid fa-paper-plane"></i>
+          Subscribe Now
+        </button>
+      </form>
+    </div>
+    <div class="support-success" id="supportSuccess" style="display:none">
+      <div class="support-success-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h4>You're on the list!</h4>
+      <p>Thanks for signing up. We'll keep you updated with our latest deals, promotions, and available appointment slots.</p>
+      <button class="btn btn-outline" onclick="closeSupportPanel()">Close</button>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/landing.js"></script>
+</body>
+</html>
